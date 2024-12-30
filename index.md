@@ -1,5 +1,1 @@
-Here you can say lots of fun things about your site.
-
-Maybe say a some things about yourself.
-
-Or maybe what you plan to blog about.
+Hi. This is Sairam. I work as a Senior Staff Data Scientist at [Anumana][https://anumana.ai/] exploring movies, history, culture, and the ever-evolving world of computer science and deep learning—**one eclectic thought at a time**.
