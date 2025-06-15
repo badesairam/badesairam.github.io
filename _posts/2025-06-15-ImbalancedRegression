@@ -1,0 +1,38 @@
+# Tackling Imbalanced Regression in Clinical AI with KDE-weighted Deep Models
+
+Clinical AI systems often must predict continuous physiological measurements (like electrolyte levels or heart function metrics) from patient data. A major challenge is imbalanced data – extreme abnormal values are scarce compared to normal readings. For example, in a large ECG dataset, dangerously high serum potassium levels (hyperkalemia) occur in only a tiny fraction of cases, whereas normal levels are abundant. A model trained naively on such skewed data will bias towards the common normal range, missing critical outliers. This is unacceptable in healthcare: a subtle but life-threatening abnormality might go undetected because the model “learned” that normal is the safe bet. Our team at Anumana tackled this issue head-on in our research effort and developed a strategy using kernel density estimation (**KDE**) to rebalance training, enabling our deep models to pay proper attention to rare, clinically significant cases. This work is detailed in our paper, [HypUC: A Framework for Handling Imbalanced Regression in Healthcare](https://arxiv.org/abs/2311.13821) published in TMLR 08/2023.
+
+## The Challenge: Skewed Data in Clinical Regression
+
+In clinical datasets, rare conditions create skewed label distributions. A clear illustration is shown below: most patients cluster in the normal range, while critical abnormal values form a long tail. The data are highly imbalanced: most potassium values lie around normal (≈4 mmol/L) with very few cases above 6 (hyperkalemia), and most LVEF values cluster near healthy levels (~60%) with far fewer in the dangerously low range
+
+Imbalanced distribution of Serum Potassium levels(top) and Ejection Fraction(bottom) in real-world clinical data.
+![Imbalanced Data](/assets/images/hypuc/imbalanced_data.png)
+
+This imbalance poses a serious problem: standard training will be dominated by the vast number of normal examples, leaving the model poorly trained on the critical extremes. In effect, the model might minimize average error by doing well on normal cases while largely ignoring the outliers – the opposite of what clinicians need. longitudinal dataset.
+
+All imbalanced learning methods, directly or indirectly, operate by compensating for the imbalance in the empirical label density distribution. This works well for class imbalance, but for continuous labels the empirical density does not accurately reflect the imbalance as seen by the neural network. Hence, compensating for data imbalance based on empirical label density is inaccurate for the continuous label space.We used a simpler, principled solution that leverages the density of the data to rebalance the training. Importantly, we had a secret weapon: the world’s largest, deepest clinical dataset. Nference’s platform has aggregated electronic medical records (EMR) and other data modalities (ECG, EEG, labs, imaging, etc.) from millions of patients, creating an “AI-ready” longitudinal dataset. 
+
+## KDE-based Rebalancing
+Our solution introduces a kernel density estimation (KDE) weighted loss to focus learning on the rare cases. Here’s how it works: 
+
+We first use KDE to estimate the probability density of the target variable across the training set. Intuitively, this gives us a smooth curve of how common each value is.
+
+$$ \rho_h(\mathbf{y}) = \frac{1}{n} \sum_{i=1}^{n} \mathcal{K}_h(\mathbf{y} - \mathbf{y}_i) = \frac{1}{nh} \sum_{i=1}^{n} \kappa \left( \frac{\mathbf{y} - \mathbf{y}_i}{h} \right) $$
+
+where $\mathcal{K}_h$ is a non-negative function often set to standard normal density function and $h$ >0 is a smoothing parameter called bandwidth. 
+
+The weighting scheme can be designed by leveraging the fact that lower-density samples must receive higher weights and vice-versa, a simple technique to achieve the same is to design the weight for target value y to be $w(\mathbf{y}) = 1/\rho_h(\mathbf{y})$
+
+KDE and related weights for imbalanced targets.
+![KDE-based Rebalancing](/assets/images/hypuc/KDE.png)
+
+
+
+
+
+
+
+
+
+
