@@ -22,14 +22,24 @@ $$ \rho_h(\mathbf{y}) = \frac{1}{n} \sum_{i=1}^{n} \mathcal{K}_h(\mathbf{y} - \m
 
 where $\mathcal{K}_h$ is a non-negative function often set to standard normal density function and $h$ >0 is a smoothing parameter called bandwidth. 
 
-The weighting scheme can be designed by leveraging the fact that lower-density samples must receive higher weights and vice-versa, a simple technique to achieve the same is to design the weight for target value y to be $w(\mathbf{y}) = 1/\rho_h(\mathbf{y})$
+The weighting scheme can be designed by leveraging the fact that lower-density samples must receive higher weights and vice-versa, a simple technique to achieve the same is to design the weight for target value y to be $w(\mathbf{y}) = 1/(\rho_h(\mathbf{y}))^\lambda$. By tuning the exponent $\lambda$, we control how strongly to up-weight rare cases. We found that a moderate weighting (not too extreme) gave the best results – effectively lifting up the tails of the distribution without overly distorting the rest.
 
 KDE and related weights for imbalanced targets.
 ![KDE-based Rebalancing](/assets/images/hypuc/KDE.png)
 
+Critically, our enormous dataset makes the KDE approach feasible and robust. Estimating a density from sparse data could be noisy; but with millions of samples, our KDE is smooth and reliable even in the far tails. This approach is a prime example of how having massive, diverse, longitudinal data is a game-changer. 
 
+## Results : Big Gains on Rare Cases
 
+The impact of KDE-weighted training was striking. Our HypUC model (with KDE weighting + uncertainty estimation, discussed below) significantly outperformed conventional baselines on multiple clinical regression tasks. For instance, on an internal test for serum potassium prediction from ECG, adding the KDE-based imbalance correction reduced mean error on high-potassium cases by >20% compared to an unweighted model. We observed improvements in overall mean squared error (MSE) and correlation with ground truth for tasks like potassium and LVEF estimation when using the KDE-weighted loss
 
+Perhaps more importantly, the model **no longer ignores the rare events**. We can see it in the prediction results: cases of severe hyperkalemia that previously would confuse the model are now predicted much more accurately, thanks to the extra weight the model gave those training examples. An unexpected benefit is improved generalization: by not over-focusing on the dominant normal cases, the model learned more robust features that also helped moderate-abnormal cases. Essentially, handling imbalance made the model **more calibrated across the board.**
+
+Imbalanced regression is just one piece of the puzzle in making clinically reliable AI. The HypUC framework goes further – it not only handles imbalance, but also provides uncertainty estimates and a mechanism to translate predictions into decisions. These will be covered in our subsequent posts.
+
+### References
+1. [HypUC: A Framework for Handling Imbalanced Regression in Healthcare](https://arxiv.org/abs/2311.13821)
+2. [Delving into Deep Imbalanced Regression](https://arxiv.org/pdf/2102.09554)
 
 
 
