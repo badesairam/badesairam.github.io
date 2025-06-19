@@ -18,7 +18,7 @@ Our solution introduces a kernel density estimation (KDE) weighted loss to focus
 
 We first use KDE to estimate the probability density of the target variable across the training set. Intuitively, this gives us a smooth curve of how common each value is.
 
-$$ \rho_h(\mathbf{y}) = \frac{1}{n} \sum_{i=1}^{n} \mathcal{K}_h(\mathbf{y} - \mathbf{y}_i) = \frac{1}{nh} \sum_{i=1}^{n} \kappa \left( \frac{\mathbf{y} - \mathbf{y}_i}{h} \right) $$
+$$ \rho_h(\mathbf{y}) = \frac{1}{n} \sum_{i=1}^{n} \mathcal{K}_h(\mathbf{y} - \mathbf{y}_i) = \frac{1}{nh} \sum_{i=1}^{n} \mathcal{K} \left( \frac{\mathbf{y} - \mathbf{y}_i}{h} \right) $$
 
 where $\mathcal{K}_h$ is a non-negative function often set to standard normal density function and $h$ >0 is a smoothing parameter called bandwidth. 
 
