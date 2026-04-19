@@ -6,14 +6,16 @@ For instance, consider measuring electrolytes like potassium in blood. Excess po
 
 ## The Challenge: Skewed Data in Clinical Regression
 
-In clinical datasets, rare conditions create skewed label distributions. A clear illustration is shown below: most patients cluster in the normal range, while critical abnormal values form a long tail. The data are highly imbalanced: most potassium values lie around normal (≈4 mmol/L) with very few cases above 6 (hyperkalemia), and most LVEF values cluster near healthy levels (~60%) with far fewer in the dangerously low range
+In clinical datasets, rare conditions create skewed label distributions. A clear illustration is shown below: most patients cluster in the normal range, while critical abnormal values form a long tail. The data is highly imbalanced: most potassium values lie around normal (≈4 mmol/L) with very few cases above 6 (hyperkalemia), and most LVEF values cluster near healthy levels (~60%) with far fewer in the dangerously low range.
 
-Imbalanced distribution of Serum Potassium levels(top) and Ejection Fraction(bottom) in real-world clinical data.
+*Imbalanced distribution of Serum Potassium levels (top) and Ejection Fraction (bottom) in real-world clinical data.*
 ![Imbalanced Data](/assets/images/hypuc/imbalanced_data.png)
 
-This imbalance poses a serious problem: standard training will be dominated by the vast number of normal examples, leaving the model poorly trained on the critical extremes. In effect, the model might minimize average error by doing well on normal cases while largely ignoring the outliers – the opposite of what clinicians need. longitudinal dataset.
+This imbalance poses a serious problem: standard training will be dominated by the vast number of normal examples, leaving the model poorly trained on the critical extremes. In effect, the model might minimize average error by doing well on normal cases while largely ignoring the outliers – the opposite of what clinicians need.
 
-All imbalanced learning methods, directly or indirectly, operate by compensating for the imbalance in the empirical label density distribution. This works well for class imbalance, but for continuous labels the empirical density does not accurately reflect the imbalance as seen by the neural network. Hence, compensating for data imbalance based on empirical label density is inaccurate for the continuous label space.We used a simpler, principled solution that leverages the density of the data to rebalance the training. Importantly, we had a secret weapon: the world’s largest, deepest clinical dataset. Anumana’s platform has aggregated electronic medical records (EMR) and other data modalities (ECG, EEG, labs, imaging, etc.) from millions of patients, creating an “AI-ready” longitudinal dataset. 
+All imbalanced learning methods, directly or indirectly, operate by compensating for the imbalance in the empirical label density distribution. This works well for class imbalance, but for continuous labels the empirical density does not accurately reflect the imbalance as seen by the neural network. Hence, compensating for data imbalance based on empirical label density is inaccurate for the continuous label space.
+
+We used a simpler, principled solution that leverages the density of the data to rebalance the training. Anumana’s platform has aggregated electronic medical records (EMR) and other data modalities (ECG, EEG, labs, imaging, etc.) from over 2.5 million patients with over 8.9 million 12-lead ECGs, creating a large and diverse clinical dataset. This scale makes density-based approaches feasible and robust.
 
 ## KDE-based Rebalancing
 Our solution introduces a kernel density estimation (KDE) weighted loss to focus learning on the rare cases. Here's how it works: 
@@ -24,18 +26,18 @@ $$ \rho_h(\mathbf{y}) = \frac{1}{n} \sum_{i=1}^{n} \mathcal{K}_h(\mathbf{y} - \m
 
 where $\mathcal{K}_h$ is a non-negative function often set to standard normal density function and $h$ >0 is a smoothing parameter called bandwidth. 
 
-The weighting scheme can be designed by leveraging the fact that lower-density samples must receive higher weights and vice-versa, a simple technique to achieve the same is to design the weight for target value y to be $w(\mathbf{y}) = 1/(\rho_h(\mathbf{y}))^\lambda$. By tuning the exponent $\lambda$, we control how strongly to up-weight rare cases. We found that a moderate weighting (not too extreme) gave the best results – effectively lifting up the tails of the distribution without overly distorting the rest.
+We design the weighting scheme by leveraging the fact that lower-density samples must receive higher weights and vice-versa. The weight for target value y is $w(\mathbf{y}) = 1/(\rho_h(\mathbf{y}))^\lambda$. By tuning the exponent $\lambda$, we control how strongly to up-weight rare cases. We found that a moderate weighting (not too extreme) gave the best results – effectively lifting up the tails of the distribution without overly distorting the rest.
 
-KDE and related weights for imbalanced targets.
+*KDE and related weights for imbalanced targets.*
 ![KDE-based Rebalancing](/assets/images/hypuc/KDE.png)
 
-Critically, our enormous dataset makes the KDE approach feasible and robust. Estimating a density from sparse data could be noisy; but with millions of samples, our KDE is smooth and reliable even in the far tails. This approach is a prime example of how having massive, diverse, longitudinal data is a game-changer. 
+Estimating a density from sparse data could be noisy, but with millions of samples across diverse patient populations and hospitals, our KDE is smooth and reliable even in the far tails of the distribution. 
 
 ## Results : Big Gains on Rare Cases
 
-The impact of KDE-weighted training was striking. Our HypUC model (with KDE weighting + uncertainty estimation, discussed below) significantly outperformed conventional baselines on multiple clinical regression tasks. For instance, on an internal test for serum potassium prediction from ECG, adding the KDE-based imbalance correction reduced mean error on high-potassium cases by >20% compared to an unweighted model. We observed improvements in overall mean squared error (MSE) and correlation with ground truth for tasks like potassium and LVEF estimation when using the KDE-weighted loss
+The impact of KDE-weighted training was striking. Our HypUC model (with KDE weighting + uncertainty estimation, discussed in the [next post](/2025/09/05/UncertainityEstimation.html)) significantly outperformed conventional baselines on multiple clinical regression tasks. For survival estimation, HypUC achieved an MSE of 54.62 compared to 84.62 for the standard probabilistic baseline and 100.12 for L2 regression. For age estimation, Pearson correlation improved from 0.72 (baseline) to 0.88 (HypUC). On serum potassium prediction from ECG, adding the KDE-based imbalance correction reduced mean error on high-potassium cases by more than 20% compared to an unweighted model. We observed similar gains for LVEF estimation, where HypUC reduced MSE from 165.81 to 133.26 while also providing well-calibrated uncertainty estimates.
 
-Perhaps more importantly, the model **no longer ignores the rare events**. We can see it in the prediction results: cases of severe hyperkalemia that previously would confuse the model are now predicted much more accurately, thanks to the extra weight the model gave those training examples. An unexpected benefit is improved generalization: by not over-focusing on the dominant normal cases, the model learned more robust features that also helped moderate-abnormal cases. Essentially, handling imbalance made the model **more calibrated across the board.**
+Perhaps more importantly, the model **no longer ignores the rare events**. We can see it in the prediction results: cases of severe hyperkalemia that previously would confuse the model are now predicted much more accurately, thanks to the extra weight the model gave those training examples. We also observed improved generalization: by not over-focusing on the dominant normal cases, the model learned more robust features that also helped moderate-abnormal cases. Essentially, handling imbalance made the model **more calibrated across the board.**
 
 Imbalanced regression is just one piece of the puzzle in making clinically reliable AI. The HypUC framework goes further – it not only handles imbalance, but also provides uncertainty estimates and a mechanism to translate predictions into decisions. These will be covered in our subsequent posts.
 
