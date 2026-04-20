@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="inputGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:0.04"/>
+    </linearGradient>
+    <linearGradient id="modelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0.04"/>
+    </linearGradient>
+    <linearGradient id="calibGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d97706;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:0.04"/>
+    </linearGradient>
+    <linearGradient id="outGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0.04"/>
+    </linearGradient>
+    <filter id="shadow2">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="340" rx="12" fill="#fafbfc" stroke="#e5e7eb" stroke-width="1"/>
+
+  <text x="450" y="28" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">HypUC Pipeline: From ECG to Calibrated Prediction with Uncertainty</text>
+
+  <!-- Step 1: ECG Input -->
+  <g transform="translate(20, 48)">
+    <rect width="150" height="255" rx="10" fill="url(#inputGrad)" stroke="#2563eb" stroke-width="1.5" filter="url(#shadow2)"/>
+    <text x="75" y="24" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">ECG Input</text>
+
+    <g transform="translate(12, 38)">
+      <rect width="126" height="195" rx="6" fill="white" stroke="#dbeafe" stroke-width="1"/>
+      <text x="8" y="18" font-size="8" fill="#93c5fd">I</text>
+      <polyline points="18,15 28,14 33,16 36,10 38,22 40,5 42,25 44,12 50,15 65,14 75,15 85,14 95,15 105,14 118,15" fill="none" stroke="#2563eb" stroke-width="1" stroke-linecap="round"/>
+
+      <text x="8" y="38" font-size="8" fill="#93c5fd">II</text>
+      <polyline points="18,35 28,34 33,36 36,30 38,42 40,22 42,45 44,32 50,35 65,34 75,35 85,34 95,35 105,34 118,35" fill="none" stroke="#2563eb" stroke-width="1" stroke-linecap="round"/>
+
+      <text x="8" y="58" font-size="8" fill="#93c5fd">III</text>
+      <polyline points="18,55 28,54 33,56 36,52 38,60 40,45 42,62 44,53 50,55 65,54 75,55 85,54 95,55 105,54 118,55" fill="none" stroke="#2563eb" stroke-width="1" stroke-linecap="round"/>
+
+      <text x="8" y="78" font-size="8" fill="#93c5fd">aVR</text>
+      <polyline points="25,75 35,74 40,76 43,72 45,80 47,68 49,82 51,73 57,75 70,74 80,75 90,74 100,75 110,74 118,75" fill="none" stroke="#2563eb" stroke-width="1" stroke-linecap="round"/>
+
+      <text x="8" y="98" font-size="8" fill="#93c5fd">aVL</text>
+      <polyline points="25,95 35,94 40,96 43,92 45,100 47,86 49,102 51,93 57,95 70,94 80,95 90,94 100,95 110,94 118,95" fill="none" stroke="#2563eb" stroke-width="1" stroke-linecap="round"/>
+
+      <text x="8" y="118" font-size="8" fill="#93c5fd">aVF</text>
+      <polyline points="25,115 35,114 40,116 43,112 45,120 47,106 49,122 51,113 57,115 70,114 80,115 90,114 100,115 110,114 118,115" fill="none" stroke="#2563eb" stroke-width="1" stroke-linecap="round"/>
+
+      <text x="63" y="140" text-anchor="middle" font-size="8" fill="#93c5fd">. . .</text>
+
+      <text x="8" y="158" font-size="8" fill="#93c5fd">V5</text>
+      <polyline points="18,155 28,154 33,156 36,148 38,162 40,138 42,168 44,150 50,155 65,154 75,155 85,154 95,155 105,154 118,155" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linecap="round"/>
+
+      <text x="8" y="178" font-size="8" fill="#93c5fd">V6</text>
+      <polyline points="18,175 28,174 33,176 36,170 38,182 40,162 42,185 44,172 50,175 65,174 75,175 85,174 95,175 105,174 118,175" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Arrow 1 -->
+  <g transform="translate(178, 168)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#9ca3af" stroke-width="1.5"/>
+    <polygon points="30,-4 38,0 30,4" fill="#9ca3af"/>
+  </g>
+
+  <!-- Step 2: DNN Model -->
+  <g transform="translate(220, 48)">
+    <rect width="180" height="255" rx="10" fill="url(#modelGrad)" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow2)"/>
+    <text x="90" y="24" text-anchor="middle" font-size="12" font-weight="600" fill="#5b21b6">Probabilistic DNN</text>
+
+    <g transform="translate(25, 40)">
+      <rect width="130" height="100" rx="6" fill="white" stroke="#ede9fe" stroke-width="1"/>
+      <circle cx="20" cy="20" r="6" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="20" cy="40" r="6" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="20" cy="60" r="6" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="20" cy="80" r="6" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="65" cy="25" r="6" fill="#a78bfa" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="65" cy="50" r="6" fill="#a78bfa" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="65" cy="75" r="6" fill="#a78bfa" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="110" cy="35" r="8" fill="#7c3aed" stroke="#5b21b6" stroke-width="1"/>
+      <text x="110" y="38" text-anchor="middle" font-size="9" fill="white" font-weight="600">&#x03BC;</text>
+      <circle cx="110" cy="65" r="8" fill="#7c3aed" stroke="#5b21b6" stroke-width="1"/>
+      <text x="110" y="68" text-anchor="middle" font-size="9" fill="white" font-weight="600">&#x03C3;</text>
+      <line x1="26" y1="20" x2="59" y2="25" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="26" y1="20" x2="59" y2="50" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="26" y1="40" x2="59" y2="25" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="26" y1="40" x2="59" y2="50" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="26" y1="60" x2="59" y2="50" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="26" y1="60" x2="59" y2="75" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="26" y1="80" x2="59" y2="50" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="26" y1="80" x2="59" y2="75" stroke="#c4b5fd" stroke-width="0.7"/>
+      <line x1="71" y1="25" x2="102" y2="35" stroke="#a78bfa" stroke-width="0.7"/>
+      <line x1="71" y1="50" x2="102" y2="35" stroke="#a78bfa" stroke-width="0.7"/>
+      <line x1="71" y1="50" x2="102" y2="65" stroke="#a78bfa" stroke-width="0.7"/>
+      <line x1="71" y1="75" x2="102" y2="65" stroke="#a78bfa" stroke-width="0.7"/>
+    </g>
+
+    <g transform="translate(15, 155)">
+      <rect width="150" height="85" rx="6" fill="white" stroke="#ede9fe" stroke-width="1"/>
+      <text x="75" y="16" text-anchor="middle" font-size="9" font-weight="600" fill="#5b21b6">Raw Prediction</text>
+      <path d="M15,68 Q25,67 35,63 Q50,50 60,35 Q68,22 75,18 Q82,22 90,35 Q100,50 115,63 Q125,67 135,68" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5" fill-opacity="0.5"/>
+      <line x1="75" y1="18" x2="75" y2="72" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="75" y="80" text-anchor="middle" font-size="8" fill="#7c3aed">&#x03BC; = 5.5</text>
+      <line x1="40" y1="58" x2="40" y2="72" stroke="#ef4444" stroke-width="1" opacity="0.6"/>
+      <line x1="110" y1="58" x2="110" y2="72" stroke="#ef4444" stroke-width="1" opacity="0.6"/>
+      <text x="75" y="72" text-anchor="middle" font-size="7" fill="#ef4444">&#x03C3; (uncalibrated)</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2 -->
+  <g transform="translate(408, 168)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#9ca3af" stroke-width="1.5"/>
+    <polygon points="30,-4 38,0 30,4" fill="#9ca3af"/>
+  </g>
+
+  <!-- Step 3: Calibration -->
+  <g transform="translate(450, 48)">
+    <rect width="200" height="255" rx="10" fill="url(#calibGrad)" stroke="#d97706" stroke-width="1.5" filter="url(#shadow2)"/>
+    <text x="100" y="24" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">Uncertainty Calibration</text>
+
+    <g transform="translate(15, 38)">
+      <rect width="170" height="90" rx="6" fill="white" stroke="#fef3c7" stroke-width="1"/>
+      <text x="85" y="16" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">&#x2460; Global Scaling</text>
+      <text x="85" y="32" text-anchor="middle" font-size="9" fill="#6b7280">Find s* to adjust all &#x03C3;</text>
+      <rect x="20" y="42" width="130" height="6" rx="3" fill="#fef3c7"/>
+      <rect x="60" y="42" width="50" height="6" rx="3" fill="#f59e0b"/>
+      <circle cx="85" cy="45" r="5" fill="#d97706" stroke="white" stroke-width="1.5"/>
+      <text x="85" y="48" text-anchor="middle" font-size="6" fill="white" font-weight="700">s*</text>
+      <text x="85" y="65" text-anchor="middle" font-size="8" fill="#92400e">&#x03C3;' = s* &#x00B7; &#x03C3;</text>
+      <text x="85" y="80" text-anchor="middle" font-size="8" fill="#9ca3af" font-style="italic">Like temperature scaling</text>
+    </g>
+
+    <g transform="translate(15, 140)">
+      <rect width="170" height="100" rx="6" fill="white" stroke="#fef3c7" stroke-width="1"/>
+      <text x="85" y="16" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">&#x2461; Hyperfine Bins</text>
+      <text x="85" y="32" text-anchor="middle" font-size="9" fill="#6b7280">Bin-wise &#x03B7; for each range</text>
+      <rect x="10" y="42" width="28" height="40" rx="3" fill="#fef9c3" stroke="#f59e0b" stroke-width="1"/>
+      <text x="24" y="58" text-anchor="middle" font-size="7" fill="#92400e">&#x03B7;&#x2081;</text>
+      <text x="24" y="70" text-anchor="middle" font-size="6" fill="#d97706">0.9</text>
+
+      <rect x="44" y="42" width="28" height="40" rx="3" fill="#fef9c3" stroke="#f59e0b" stroke-width="1"/>
+      <text x="58" y="58" text-anchor="middle" font-size="7" fill="#92400e">&#x03B7;&#x2082;</text>
+      <text x="58" y="70" text-anchor="middle" font-size="6" fill="#d97706">1.1</text>
+
+      <rect x="78" y="42" width="28" height="40" rx="3" fill="#fde68a" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="92" y="58" text-anchor="middle" font-size="7" fill="#92400e">&#x03B7;&#x2083;</text>
+      <text x="92" y="70" text-anchor="middle" font-size="6" fill="#d97706">1.4</text>
+
+      <rect x="112" y="42" width="28" height="40" rx="3" fill="#fcd34d" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="126" y="58" text-anchor="middle" font-size="7" fill="#92400e">&#x03B7;&#x2084;</text>
+      <text x="126" y="70" text-anchor="middle" font-size="6" fill="#d97706">1.8</text>
+
+      <text x="85" y="92" text-anchor="middle" font-size="8" fill="#92400e">&#x03C3;_calib = &#x03B7; &#x00B7; s* &#x00B7; &#x03C3;</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3 -->
+  <g transform="translate(658, 168)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#9ca3af" stroke-width="1.5"/>
+    <polygon points="30,-4 38,0 30,4" fill="#9ca3af"/>
+  </g>
+
+  <!-- Step 4: Calibrated Output -->
+  <g transform="translate(692, 48)">
+    <rect width="185" height="255" rx="10" fill="url(#outGrad)" stroke="#059669" stroke-width="1.5" filter="url(#shadow2)"/>
+    <text x="92" y="24" text-anchor="middle" font-size="12" font-weight="600" fill="#047857">Calibrated Output</text>
+
+    <g transform="translate(15, 40)">
+      <rect width="155" height="90" rx="6" fill="white" stroke="#d1fae5" stroke-width="1"/>
+      <text x="77" y="14" text-anchor="middle" font-size="9" font-weight="600" fill="#059669">Well-Calibrated</text>
+      <path d="M25,72 Q40,70 50,65 Q60,50 67,30 Q72,20 77,16 Q82,20 87,30 Q94,50 104,65 Q114,70 129,72" fill="#d1fae5" stroke="#059669" stroke-width="1.5" fill-opacity="0.6"/>
+      <line x1="77" y1="16" x2="77" y2="76" stroke="#059669" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="57" y1="55" x2="57" y2="76" stroke="#059669" stroke-width="1.2"/>
+      <line x1="97" y1="55" x2="97" y2="76" stroke="#059669" stroke-width="1.2"/>
+      <text x="77" y="84" text-anchor="middle" font-size="8" fill="#059669">5.5 &#x00B1; 0.3 mmol/L</text>
+    </g>
+
+    <g transform="translate(12, 145)">
+      <rect width="160" height="50" rx="6" fill="white" stroke="#d1fae5" stroke-width="1"/>
+      <text x="80" y="16" text-anchor="middle" font-size="9" font-weight="600" fill="#047857">95% CI: [5.2, 5.8]</text>
+      <text x="80" y="32" text-anchor="middle" font-size="9" fill="#059669">&#x2713; Covers 95% of true values</text>
+      <text x="80" y="44" text-anchor="middle" font-size="8" fill="#6b7280">UCE &#x2248; 0.41 (was 1.83)</text>
+    </g>
+
+    <g transform="translate(12, 205)">
+      <rect width="160" height="40" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+      <text x="80" y="16" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">&#x26A0; High Entropy?</text>
+      <text x="80" y="30" text-anchor="middle" font-size="8" fill="#991b1b">Flag for clinician review</text>
+    </g>
+  </g>
+</svg>

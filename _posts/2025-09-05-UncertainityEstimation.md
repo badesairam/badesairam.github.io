@@ -1,5 +1,7 @@
 # Uncertainty Estimation in Healthcare AI
 
+![Overview: HypUC pipeline from ECG input through probabilistic DNN and two-stage calibration to reliable clinical predictions](/assets/images/hypuc/uncertainty_calibration_hero.svg)
+
 Building on our [previous discussion of imbalanced regression](/2025/06/15/ImbalancedRegression.html), we now turn to another critical challenge: uncertainty estimation. While addressing data imbalance helps models pay attention to rare cases, we must also ensure that when our AI makes predictions, it can honestly communicate how confident it is in those predictions. This work is detailed in our paper, [HypUC: A Framework for Handling Imbalanced Regression in Healthcare](https://arxiv.org/abs/2311.13821) published in TMLR 08/2023.
 
 When an AI model analyzes a patient's ECG and predicts a potassium level of 5.5 mmol/L, clinicians need to know: does the model's 95% confidence interval span 5.2–5.8, or is it just making its best guess with no reliable bounds? This distinction is crucial in healthcare, where overconfident predictions could lead to wrong treatments, while underconfident ones might trigger unnecessary tests. The AI must "know what it doesn't know" – a principle that forms the foundation of trustworthy clinical AI.

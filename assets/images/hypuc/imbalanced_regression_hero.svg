@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="ecgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:0.05"/>
+    </linearGradient>
+    <linearGradient id="kdeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0.05"/>
+    </linearGradient>
+    <linearGradient id="resultGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0.05"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="320" rx="12" fill="#fafbfc" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Box 1: ECG Input -->
+  <g transform="translate(30, 40)">
+    <rect width="200" height="240" rx="10" fill="url(#ecgGrad)" stroke="#2563eb" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="100" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">ECG Input</text>
+
+    <g transform="translate(20, 45)">
+      <rect width="160" height="80" rx="6" fill="white" stroke="#dbeafe" stroke-width="1"/>
+      <polyline points="5,50 15,50 25,48 30,52 35,45 40,55 45,40 48,60 50,20 52,70 54,30 58,50 65,48 75,50 85,48 90,52 95,45 100,55 105,40 108,60 110,20 112,70 114,30 118,50 125,48 135,50 145,48 155,50" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+
+    <g transform="translate(30, 145)">
+      <text x="70" y="-5" text-anchor="middle" font-size="10" fill="#6b7280">Label Distribution</text>
+      <rect x="10" y="10" width="16" height="70" rx="2" fill="#93c5fd"/>
+      <rect x="34" y="30" width="16" height="50" rx="2" fill="#93c5fd"/>
+      <rect x="58" y="50" width="16" height="30" rx="2" fill="#93c5fd"/>
+      <rect x="82" y="65" width="16" height="15" rx="2" fill="#fca5a5"/>
+      <rect x="106" y="72" width="16" height="8" rx="2" fill="#fca5a5"/>
+      <text x="18" y="90" text-anchor="middle" font-size="8" fill="#9ca3af">Normal</text>
+      <text x="114" y="90" text-anchor="middle" font-size="8" fill="#ef4444">Rare</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1 -->
+  <g transform="translate(240, 150)">
+    <line x1="0" y1="0" x2="50" y2="0" stroke="#9ca3af" stroke-width="2" stroke-dasharray="4,3"/>
+    <polygon points="50,-5 60,0 50,5" fill="#9ca3af"/>
+  </g>
+
+  <!-- Box 2: KDE Reweighting -->
+  <g transform="translate(310, 40)">
+    <rect width="230" height="240" rx="10" fill="url(#kdeGrad)" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="115" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">KDE-Weighted Loss</text>
+
+    <g transform="translate(20, 45)">
+      <rect width="190" height="80" rx="6" fill="white" stroke="#ede9fe" stroke-width="1"/>
+      <text x="95" y="14" text-anchor="middle" font-size="9" fill="#7c3aed">w(y) = 1/&#x3C1;(y)&#x03BB;</text>
+      <path d="M10,65 Q30,63 50,60 Q70,55 90,45 Q110,35 130,25 Q150,20 170,18 Q180,17 185,16" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+      <text x="25" y="78" font-size="8" fill="#9ca3af">Normal</text>
+      <text x="155" y="78" font-size="8" fill="#7c3aed">Rare</text>
+      <text x="170" y="14" font-size="9" fill="#7c3aed">&#x2191; weight</text>
+    </g>
+
+    <g transform="translate(30, 145)">
+      <text x="85" y="-5" text-anchor="middle" font-size="10" fill="#6b7280">Effective Distribution</text>
+      <rect x="10" y="35" width="20" height="45" rx="2" fill="#c4b5fd"/>
+      <rect x="40" y="30" width="20" height="50" rx="2" fill="#c4b5fd"/>
+      <rect x="70" y="25" width="20" height="55" rx="2" fill="#c4b5fd"/>
+      <rect x="100" y="28" width="20" height="52" rx="2" fill="#a78bfa"/>
+      <rect x="130" y="32" width="20" height="48" rx="2" fill="#a78bfa"/>
+      <text x="85" y="92" text-anchor="middle" font-size="9" fill="#7c3aed">&#x2248; Balanced</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2 -->
+  <g transform="translate(550, 150)">
+    <line x1="0" y1="0" x2="50" y2="0" stroke="#9ca3af" stroke-width="2" stroke-dasharray="4,3"/>
+    <polygon points="50,-5 60,0 50,5" fill="#9ca3af"/>
+  </g>
+
+  <!-- Box 3: Better Predictions -->
+  <g transform="translate(620, 40)">
+    <rect width="250" height="240" rx="10" fill="url(#resultGrad)" stroke="#059669" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="125" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#047857">Accurate Across the Board</text>
+
+    <g transform="translate(25, 45)">
+      <rect width="200" height="80" rx="6" fill="white" stroke="#d1fae5" stroke-width="1"/>
+      <line x1="10" y1="70" x2="190" y2="10" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle cx="25" cy="63" r="3" fill="#34d399" opacity="0.7"/>
+      <circle cx="40" cy="58" r="3" fill="#34d399" opacity="0.7"/>
+      <circle cx="55" cy="52" r="3" fill="#34d399" opacity="0.7"/>
+      <circle cx="70" cy="47" r="3" fill="#34d399" opacity="0.7"/>
+      <circle cx="85" cy="42" r="3" fill="#34d399" opacity="0.7"/>
+      <circle cx="100" cy="38" r="3" fill="#34d399" opacity="0.7"/>
+      <circle cx="115" cy="32" r="3" fill="#34d399" opacity="0.7"/>
+      <circle cx="130" cy="28" r="4" fill="#059669" opacity="0.9"/>
+      <circle cx="145" cy="23" r="4" fill="#059669" opacity="0.9"/>
+      <circle cx="160" cy="18" r="4" fill="#059669" opacity="0.9"/>
+      <circle cx="175" cy="14" r="4" fill="#059669" opacity="0.9"/>
+      <text x="100" y="78" text-anchor="middle" font-size="8" fill="#6b7280">Predicted vs Actual</text>
+    </g>
+
+    <g transform="translate(25, 145)">
+      <rect width="200" height="72" rx="6" fill="white" stroke="#d1fae5" stroke-width="1"/>
+      <text x="100" y="18" text-anchor="middle" font-size="10" font-weight="600" fill="#047857">Key Improvements</text>
+      <text x="15" y="35" font-size="10" fill="#374151">Survival MSE</text>
+      <text x="185" y="35" text-anchor="end" font-size="10" font-weight="600" fill="#059669">84.6 &#x2192; 54.6</text>
+      <text x="15" y="50" font-size="10" fill="#374151">Age Correlation</text>
+      <text x="185" y="50" text-anchor="end" font-size="10" font-weight="600" fill="#059669">0.72 &#x2192; 0.88</text>
+      <text x="15" y="65" font-size="10" fill="#374151">Potassium UCE</text>
+      <text x="185" y="65" text-anchor="end" font-size="10" font-weight="600" fill="#059669">1.83 &#x2192; 0.41</text>
+    </g>
+  </g>
+</svg>
